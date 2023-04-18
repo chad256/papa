@@ -31,4 +31,16 @@ defmodule PapaWeb.UserController do
         |> json(%{error: error})
     end
   end
+
+  def delete(conn, %{"id" => id}) do
+    case Users.delete_user(id) do
+      {:ok, _} ->
+        json(conn, %{message: "User successfully deleted."})
+
+      {:error, error} ->
+        conn
+        |> put_status(500)
+        |> json(%{error: error})
+    end
+  end
 end

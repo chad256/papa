@@ -20,4 +20,13 @@ defmodule Papa.Users do
         {:error, "Failed to update user."}
     end
   end
+
+  def delete_user(id) do
+    with user = %User{} <- Users.get_user(id) do
+      Repo.delete(user)
+    else
+      _ ->
+        {:error, "Failed to delete user."}
+    end
+  end
 end

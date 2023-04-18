@@ -87,4 +87,29 @@ defmodule PapaWeb.UserControllerTest do
       assert response["error"] == "Failed to update user."
     end
   end
+
+  describe "delete/2" do
+    test "delete existing user", %{conn: conn} do
+      {:ok, user} =
+        Users.create_user(%{first_name: "Alice", last_name: "Jones", email: "alice@example.com"})
+
+      response =
+        conn
+        |> delete("/api/users/#{user.id}")
+        |> response(200)
+        |> Jason.decode!()
+
+      assert response["message"] == "User successfully deleted."
+    end
+
+    test "delete when user doesn't exist", %{conn: conn} do
+      response =
+        conn
+        |> delete("/api/users/1")
+        |> response(500)
+        |> Jason.decode!()
+
+      assert response["error"] == "Failed to delete user."
+    end
+  end
 end
