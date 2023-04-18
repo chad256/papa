@@ -9,5 +9,6 @@ defmodule PapaWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:index, :new, :edit]
+    resources "/visits", VisitController, only: [:create, :index, :update]
   end
 end
