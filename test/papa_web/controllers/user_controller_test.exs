@@ -55,4 +55,36 @@ defmodule PapaWeb.UserControllerTest do
 
     assert response["user"] == nil
   end
+
+  describe "update/2" do
+    test "update user with valid params", %{conn: conn} do
+      {:ok, user} =
+        Users.create_user(%{first_name: "Alice", last_name: "Jones", email: "alice@example.com"})
+
+      params = %{email: "new@example.com"}
+
+      response =
+        conn
+        |> put("/api/users/#{user.id}", params)
+        |> response(200)
+        |> Jason.decode!()
+
+      assert response["user"]["email"] == "new@example.com"
+    end
+
+    test "update user with invalid params", %{conn: conn} do
+      {:ok, user} =
+        Users.create_user(%{first_name: "Alice", last_name: "Jones", email: "alice@example.com"})
+
+      params = %{email: "invalid@example"}
+
+      response =
+        conn
+        |> put("/api/users/#{user.id}", params)
+        |> response(500)
+        |> Jason.decode!()
+
+      assert response["error"] == "Failed to update user."
+    end
+  end
 end

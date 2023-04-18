@@ -19,4 +19,16 @@ defmodule PapaWeb.UserController do
     user = Users.get_user(id)
     json(conn, %{user: user})
   end
+
+  def update(conn, %{"id" => id} = params) do
+    case Users.update_user(id, params) do
+      {:ok, user} ->
+        json(conn, %{user: user})
+
+      {:error, error} ->
+        conn
+        |> put_status(500)
+        |> json(%{error: error})
+    end
+  end
 end
