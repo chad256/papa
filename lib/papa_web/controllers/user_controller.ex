@@ -14,4 +14,9 @@ defmodule PapaWeb.UserController do
         |> json(%{error: "Failed to create user."})
     end
   end
+
+  def show(conn, %{"id" => id}) do
+    user = Users.get_user(id)
+    json(conn, %{user: user})
+  end
 end

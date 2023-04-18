@@ -4,7 +4,7 @@ defmodule Papa.User do
 
   @email_regex ~r/^[A-Za-z0-9._%+-+']+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
 
-  @derive {Jason.Encoder, only: [:first_name, :last_name, :email]}
+  @derive {Jason.Encoder, only: [:id, :first_name, :last_name, :email]}
 
   schema "users" do
     field :first_name, :string
