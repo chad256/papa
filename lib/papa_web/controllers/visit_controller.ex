@@ -14,4 +14,9 @@ defmodule PapaWeb.VisitController do
         |> json(%{error: "Failed to create visit."})
     end
   end
+
+  def index(conn, params) do
+    visits = Visits.get_visits(params["opts"])
+    json(conn, %{visits: visits})
+  end
 end
