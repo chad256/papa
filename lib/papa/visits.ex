@@ -4,7 +4,8 @@ defmodule Papa.Visits do
   alias Papa.{Repo, Transaction, User, Users, Visit}
 
   def create_visit(params) do
-    with member = %User{} <- Users.get_user(params["member_id"]),
+    with member_id when is_integer(member_id) <- params["member_id"],
+         member = %User{} <- Users.get_user(member_id),
          true <- member.minutes >= params["minutes"] do
       %Visit{}
       |> Visit.changeset(params)
