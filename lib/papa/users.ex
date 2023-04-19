@@ -13,6 +13,10 @@ defmodule Papa.Users do
     Repo.get(User, id)
   end
 
+  def get_users do
+    Repo.all(User)
+  end
+
   def update_user(id, params) do
     with user = %User{} <- Users.get_user(id),
          {:ok, updated_user} <- User.changeset(user, params) |> Repo.update() do

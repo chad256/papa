@@ -8,8 +8,8 @@ defmodule PapaWeb.Router do
   scope "/api", PapaWeb do
     pipe_through :api
 
-    resources "/users", UserController, except: [:index, :new, :edit]
+    resources "/users", UserController, except: [:new, :edit]
     resources "/visits", VisitController, only: [:create, :index, :update]
-    resources "/transactions", TransactionController, only: [:create]
+    resources "/transactions", TransactionController, only: [:create, :index]
   end
 end

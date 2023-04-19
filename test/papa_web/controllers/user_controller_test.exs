@@ -112,4 +112,19 @@ defmodule PapaWeb.UserControllerTest do
       assert response["error"] == "Failed to delete user."
     end
   end
+
+  describe "index/2" do
+    test "returns list of all users", %{conn: conn} do
+      Users.create_user(%{first_name: "Alice", last_name: "Jones", email: "alice@example.com"})
+      Users.create_user(%{first_name: "Bob", last_name: "Smith", email: "bob@example.com"})
+
+      response =
+        conn
+        |> get("/api/users")
+        |> response(200)
+        |> Jason.decode!()
+
+      assert length(response["users"]) == 2
+    end
+  end
 end

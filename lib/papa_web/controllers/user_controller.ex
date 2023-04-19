@@ -43,4 +43,9 @@ defmodule PapaWeb.UserController do
         |> json(%{error: error})
     end
   end
+
+  def index(conn, _) do
+    users = Users.get_users()
+    json(conn, %{users: users})
+  end
 end

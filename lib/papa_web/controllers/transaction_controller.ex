@@ -14,4 +14,9 @@ defmodule PapaWeb.TransactionController do
         |> json(%{error: "Failed to create transaction."})
     end
   end
+
+  def index(conn, _) do
+    transactions = Transactions.get_transactions()
+    json(conn, %{transactions: transactions})
+  end
 end

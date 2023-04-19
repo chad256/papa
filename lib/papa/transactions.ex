@@ -21,4 +21,8 @@ defmodule Papa.Transactions do
     Users.update_minutes(member_id, -visit.minutes)
     {:ok, transaction}
   end
+
+  def get_transactions do
+    Repo.all(Transaction)
+  end
 end
