@@ -19,6 +19,7 @@ defmodule Papa.Visit do
   def changeset(visit, attrs) do
     visit
     |> cast(attrs, [:date, :minutes, :tasks, :member_id])
+    |> validate_required([:date, :minutes, :member_id])
     |> foreign_key_constraint(:member_id)
   end
 end

@@ -10,5 +10,6 @@ defmodule PapaWeb.Router do
 
     resources "/users", UserController, except: [:index, :new, :edit]
     resources "/visits", VisitController, only: [:create, :index, :update]
+    resources "/transactions", TransactionController, only: [:create]
   end
 end
