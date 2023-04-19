@@ -6,7 +6,7 @@ defmodule PapaWeb.TransactionControllerTest do
   describe "create/2" do
     setup do
       {:ok, member} =
-        %{first_name: "Alice", last_name: "Jones", email: "alice@example.com"}
+        %{first_name: "Alice", last_name: "Jones", email: "alice@example.com", minutes: 45}
         |> Users.create_user()
 
       {:ok, pal} =
@@ -19,10 +19,10 @@ defmodule PapaWeb.TransactionControllerTest do
     test "creates transaction with valid params", %{conn: conn, member: member, pal: pal} do
       {:ok, visit} =
         Visits.create_visit(%{
-          member_id: member.id,
-          date: DateTime.utc_now(),
-          minutes: 30,
-          tasks: ["clean", "talk"]
+          "member_id" => member.id,
+          "date" => DateTime.utc_now(),
+          "minutes" => 30,
+          "tasks" => ["clean", "talk"]
         })
 
       response =

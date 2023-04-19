@@ -10,13 +10,14 @@ defmodule Papa.User do
     field :first_name, :string
     field :last_name, :string
     field :email, :string
+    field :minutes, :integer, default: 0
 
     timestamps()
   end
 
   def changeset(changeset, attrs) do
     changeset
-    |> cast(attrs, [:first_name, :last_name, :email])
+    |> cast(attrs, [:first_name, :last_name, :email, :minutes])
     |> validate_format(:email, @email_regex)
   end
 end

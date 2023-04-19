@@ -1,12 +1,18 @@
 defmodule Papa.Visits do
   import Ecto.Query
 
-  alias Papa.{Repo, Transaction, Visit}
+  alias Papa.{Repo, Transaction, User, Users, Visit}
 
   def create_visit(params) do
-    %Visit{}
-    |> Visit.changeset(params)
-    |> Repo.insert()
+    with member = %User{} <- Users.get_user(params["member_id"]),
+         true <- member.minutes >= params["minutes"] do
+      %Visit{}
+      |> Visit.changeset(params)
+      |> Repo.insert()
+    else
+      _ ->
+        {:error, "Failed to create visit"}
+    end
   end
 
   def get_visits("unfulfilled_visits") do

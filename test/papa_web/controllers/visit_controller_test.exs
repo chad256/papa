@@ -6,7 +6,7 @@ defmodule PapaWeb.VisitControllerTest do
   describe "create/2" do
     setup do
       {:ok, user} =
-        %{first_name: "Alice", last_name: "Jones", email: "alice@example.com"}
+        %{first_name: "Alice", last_name: "Jones", email: "alice@example.com", minutes: 60}
         |> Users.create_user()
 
       %{user: user}
@@ -14,10 +14,10 @@ defmodule PapaWeb.VisitControllerTest do
 
     test "create visit with valid params", %{conn: conn, user: user} do
       visit_params = %{
-        member_id: user.id,
-        date: DateTime.utc_now(),
-        minutes: 30,
-        tasks: ["fix appliance", "play chess"]
+        "member_id" => user.id,
+        "date" => DateTime.utc_now(),
+        "minutes" => 30,
+        "tasks" => ["fix appliance", "play chess"]
       }
 
       response =
@@ -45,30 +45,57 @@ defmodule PapaWeb.VisitControllerTest do
 
       assert response["error"] == "Failed to create visit."
     end
+
+    test "member can't request visit for more minutes than they have", %{conn: conn, user: user} do
+      visit_params = %{
+        member_id: user.id,
+        date: DateTime.utc_now(),
+        minutes: 120,
+        tasks: ["lawn maintenance"]
+      }
+
+      response =
+        conn
+        |> post("/api/visits", visit_params)
+        |> response(500)
+        |> Jason.decode!()
+
+      assert response["error"] == "Failed to create visit."
+    end
   end
 
   describe "index/2" do
     setup do
       {:ok, user1} =
-        Users.create_user(%{first_name: "Alice", last_name: "Jones", email: "alice@example.com"})
+        Users.create_user(%{
+          first_name: "Alice",
+          last_name: "Jones",
+          email: "alice@example.com",
+          minutes: 100
+        })
 
       {:ok, user2} =
-        Users.create_user(%{first_name: "Bob", last_name: "Smith", email: "bob@example.com"})
+        Users.create_user(%{
+          first_name: "Bob",
+          last_name: "Smith",
+          email: "bob@example.com",
+          minutes: 150
+        })
 
       {:ok, visit1} =
         Visits.create_visit(%{
-          member_id: user1.id,
-          date: DateTime.utc_now(),
-          minutes: 50,
-          tasks: ["clean"]
+          "member_id" => user1.id,
+          "date" => DateTime.utc_now(),
+          "minutes" => 50,
+          "tasks" => ["clean"]
         })
 
       {:ok, visit2} =
         Visits.create_visit(%{
-          member_id: user1.id,
-          date: DateTime.utc_now(),
-          minutes: 30,
-          tasks: ["play chess"]
+          "member_id" => user2.id,
+          "date" => DateTime.utc_now(),
+          "minutes" => 30,
+          "tasks" => ["play chess"]
         })
 
       Transactions.create_transaction(%{
