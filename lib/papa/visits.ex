@@ -32,4 +32,8 @@ defmodule Papa.Visits do
   def get_visits(_) do
     Repo.all(Visit)
   end
+
+  def get_visit(visit_id) do
+    Repo.get(Visit, visit_id)
+  end
 end

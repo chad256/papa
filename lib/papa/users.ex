@@ -1,4 +1,6 @@
 defmodule Papa.Users do
+  import Ecto.Query
+
   alias Papa.{Repo, User, Users}
 
   def create_user(params) do
@@ -28,5 +30,12 @@ defmodule Papa.Users do
       _ ->
         {:error, "Failed to delete user."}
     end
+  end
+
+  def update_minutes(user_id, minutes) do
+    User
+    |> where([u], u.id == ^user_id)
+    |> update([u], set: [minutes: u.minutes + ^minutes])
+    |> Repo.update_all([])
   end
 end
